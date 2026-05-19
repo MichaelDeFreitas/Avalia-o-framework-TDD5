@@ -1,267 +1,103 @@
-# LinkPedia — Sistema de Cadastro de Links
+# Prática TDD 5
 
-## Sobre o projeto
+Desafio técnico para os alunos da disciplina "Desenvolvimento Web 3"
 
-O **LinkPedia** é um projeto desenvolvido em **Django** para a disciplina de **Desenvolvimento Web 3**, com foco na prática de **TDD (Test Driven Development)**.
 
-A ideia principal do sistema é permitir que usuários autenticados possam acessar uma plataforma para cadastrar, listar, editar e remover links úteis.
 
-O projeto começou com uma primeira sprint focada em autenticação e, na segunda sprint, evolui para a construção de um CRUD de links.
 
----
+No ambiente Linux:
 
-## Objetivo geral
-
-Criar um sistema web simples, funcional e testável para gerenciamento de links.
-
-O usuário deve conseguir:
-
-- Fazer login usando e-mail institucional;
-- Acessar a página inicial apenas se estiver logado;
-- Cadastrar novos links;
-- Listar links cadastrados;
-- Editar links existentes;
-- Excluir links cadastrados;
-- Utilizar o sistema com proteção de acesso por login.
-
----
-
-## Tecnologias utilizadas
-
-- Python
-- Django
-- SQLite
-- HTML
-- CSS
-- Bootstrap
-- Font Awesome
-- Coverage.py
-- Testes automatizados com `django.test`
-
----
-
-## Estrutura principal do projeto
-
-```text
-Avaliação_P2/
-├── README.md
-├── requirements.txt
-├── caso_uso.png
-├── cobertura_testes.png
-├── index.png
-├── login.png
-├── logout.png
-├── model.png
-└── linkpedia/
-    ├── manage.py
-    ├── links.sqlite3
-    ├── core/
-    │   ├── models.py
-    │   ├── forms.py
-    │   ├── views.py
-    │   ├── urls.py
-    │   ├── templates/
-    │   └── tests/
-    └── linkpedia/
-        ├── settings.py
-        ├── urls.py
-        ├── asgi.py
-        └── wsgi.py
-```
-
----
-
-## Model principal
-
-O sistema trabalha com o modelo `LinkModel`.
-
-```python
-class LinkModel(models.Model):
-    titulo = models.CharField(max_length=150)
-    link = models.URLField(max_length=500)
-    observacao = models.TextField(blank=True)
-
-    def __str__(self):
-        return f"{self.titulo} - {self.link}"
-```
-
-Esse model representa um link salvo no sistema.
-
-Cada link possui:
-
-| Campo | Função |
-|---|---|
-| `titulo` | Nome ou título do link |
-| `link` | Endereço URL do site |
-| `observacao` | Comentário ou descrição opcional |
-
----
-
-## Sprint 1 — Metas propostas
-
-Na primeira sprint, o foco principal foi criar a base de autenticação do sistema.
-
-### Metas da Sprint 1
-
-| Meta | Status |
-|---|---|
-| Criar tela de login | Concluído |
-| Validar e-mail institucional `@cps.sp.gov.br` | Concluído |
-| Autenticar usuário cadastrado | Concluído |
-| Exibir página inicial após login | Concluído |
-| Criar logout | Concluído |
-| Proteger página inicial com login obrigatório | Concluído |
-| Criar testes para login | Concluído |
-| Manter cobertura de testes acima de 90% | Concluído na base inicial |
-
----
-
-## Sprint 2 — Metas propostas
-
-Na segunda sprint, o objetivo é implementar o CRUD de links.
-
-### Metas da Sprint 2
-
-| Meta | Status atual |
-|---|---|
-| Criar formulário para `LinkModel` | Parcialmente concluído |
-| Criar tela de cadastro | Parcialmente concluído |
-| Salvar links no banco de dados | Parcialmente concluído |
-| Criar tela de listagem | Em desenvolvimento |
-| Exibir links cadastrados | Pendente de finalização |
-| Criar edição de links | Em desenvolvimento |
-| Criar exclusão de links | Em desenvolvimento |
-| Proteger CRUD com `login_required` | Parcialmente concluído |
-| Criar testes para formulário de links | Pendente |
-| Criar testes para cadastro/listagem/edição/exclusão | Pendente |
-| Manter cobertura de testes acima de 90% | Pendente de nova validação |
-
----
-
-## O que já foi feito até o momento
-
-Até o momento, o projeto possui:
-
-- Sistema de login funcional;
-- Validação de e-mail institucional;
-- Sistema de logout;
-- Página inicial protegida;
-- Model `LinkModel` criado;
-- Testes para login;
-- Testes para o model de links;
-- Formulário `LinkForm` iniciado;
-- View de cadastro iniciada;
-- Templates de cadastro, listagem, edição e exclusão criados como base;
-- Rotas iniciais para cadastro, listagem, edição e exclusão.
-
----
-
-## O que ainda precisa ser finalizado
-
-Para concluir completamente a Sprint 2, ainda é necessário:
-
-- Ajustar a view de listagem para buscar os links no banco;
-- Ajustar a view de edição para receber o `id` do link;
-- Ajustar a view de exclusão para receber o `id` do link;
-- Atualizar as URLs de edição e exclusão com `<int:id>`;
-- Fazer o template `listar.html` exibir os links cadastrados;
-- Fazer o template `editar.html` mostrar o formulário preenchido;
-- Fazer o template `excluir.html` confirmar a exclusão;
-- Criar testes para o `LinkForm`;
-- Criar testes para as views do CRUD;
-- Rodar `coverage` novamente para verificar a cobertura.
-
----
-
-## Como executar o projeto
-
-### 1. Criar ambiente virtual
-
-No Windows:
-
-```bash
-python -m venv venv
-```
-
-### 2. Ativar ambiente virtual
-
-```bash
-.\venv\Scripts\activate
-```
-
-### 3. Instalar dependências
-
-```bash
+```console
+git clone https://github.com/orlandosaraivajr/Pratica_TDD_5.git
+cd Pratica_TDD_5/
+virtualenv -p python3 venv
+source venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 4. Entrar na pasta do projeto Django
-
-```bash
-cd linkpedia
-```
-
-### 5. Rodar migrações
-
-```bash
+cd linkpedia/
 python manage.py migrate
-```
-
-### 6. Criar superusuário
-
-```bash
+python manage.py test
+coverage run --source='.' manage.py test 
+coverage html
 python manage.py createsuperuser
-```
-
-Sugestão de dados conforme a proposta inicial:
-
-```text
-Username: aluno
-E-mail: seu e-mail institucional
-Password: fatec
-```
-
-### 7. Rodar o servidor
-
-```bash
 python manage.py runserver
 ```
 
-Depois acesse:
+No ambiente Windows:
 
-```text
-http://127.0.0.1:8000/
-```
-
----
-
-## Como rodar os testes
-
-Dentro da pasta onde está o `manage.py`, execute:
-
-```bash
+```console
+git clone https://github.com/orlandosaraivajr/Pratica_TDD_5.git
+cd Pratica_TDD_5/
+virtualenv venv
+cd venv
+cd scripts
+activate.bat
+cd ..
+cd ..
+pip install -r requirements.txt
+cd linkpedia/
+python manage.py migrate
 python manage.py test
-```
-
-Para rodar com cobertura:
-
-```bash
-coverage run --source='.' manage.py test
+coverage run --source='.' manage.py test 
 coverage html
+python manage.py createsuperuser
+python manage.py runserver
+
 ```
 
-Depois abra o arquivo:
+Crie um superusuário com as seguintes credenciais:
 
-```text
-htmlcov/index.html
-```
+- Username <b>aluno</b>:
+- E-mail address: <b>seu e-mail institucional</b>
+- Password: <b>fatec</b>
 
----
+### Requisitos da Sprint 1
 
-## Resumo do projeto
+<img src="caso_uso.png">
 
-O **LinkPedia** é um sistema Django criado para praticar desenvolvimento com testes.  
-A primeira etapa focou no login e controle de acesso.  
-A segunda etapa está focada na criação de um CRUD completo de links.
+A expectativa do projeto é que tenha-se um cadastro de links. O que foi priorizado na primeira sprint foi o sistema de login/logout.
+O login somente pode ocorrer com o e-mail institucional @cps.sp.gov.br 
 
-A meta final é ter um sistema onde apenas usuários logados possam cadastrar, visualizar, editar e excluir links, mantendo uma boa cobertura de testes automatizados.
+
+<img src="login.png">
+
+Imagem 1: Tela de Login
+
+<img src="index.png">
+
+Imagem 2: Tela index
+
+<img src="logout.png">
+Imagem 3: Tela logout
+
+## Requisitos para a Sprint 2
+
+Agora começa o seu desafio: desenvolver um cadastro de links com as operações de CRUD.
+
+Com base no modelo implementado (ver imagem abaixo), você deve:
+<img src="model.png">
+
+
+✅ Criar um formulário para o modelo LinkModel (pode usar Forms ou ModelForms);
+
+Implementar as seguintes funcionalidades:
+
+✅ Cadastrar contato
+
+✅ Listar contatos
+
+✅ Atualizar contato
+
+✅ Remover contato
+
+Proteger todas essas funcionalidades para que apenas usuários logados tenham acesso.
+
+Ao final da Sprint 2, o sistema deverá conter um CRUD funcional de links em Django.
+
+
+## Ajustes nos testes / novos testes
+
+O código fonte passará por atualizações para acomodar estes novos requisitos. Com isso, você deve ajudar os testes existentes e criar novos testes.
+
+Você recebeu a sprint 1 com uma cobertura de teste acima de 90%. É esperado que ao final da sprint 2 a cobertura mantenha-se neste patamar.
+
+<img src="cobertura_testes.png">
